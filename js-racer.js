@@ -7,6 +7,8 @@ var linePlayer = [] //menanmpung line player
 var player = [] //menampung jumlah player
 var playerIcon = "abcdefghijklmnopqrstuvwxyz" //untuk mengganti icon Player dari player0 - player25
 var winPlayer, idxWinner
+var randomObstacle1 = Math.floor(Math.random() * 17 ) + 2
+var randomObstacle2 = Math.floor(Math.random() * 17 ) + 2
 
 //Isi nilai index awal tiap player
 for(let i = 0; i < totalPlayer; i++){
@@ -33,9 +35,9 @@ function sleep(milliseconds) {
     }
 }
 
-function printBoard () {
+function printBoard() {
     clearScreen()  
-    // console.log(linePlayer)
+    console.log("----JS Racer Obstacle----"+"\n")
     for(let i = 0; i < totalPlayer; i++){
         let board = printLine(player[i],linePlayer[i])
         console.log(board)
@@ -47,6 +49,8 @@ function printLine (player, pos) {
     for(let j = 0; j < totalLine; j++){
         if(j===pos){
             line += ("|"+player)
+        } else if(j === randomObstacle1 || j ===randomObstacle2){
+            line += "|#"
         } else {
             line += "| "
         }
@@ -55,36 +59,44 @@ function printLine (player, pos) {
 }
 
 function advance(player) {
-//   var posPlayer = []
+    var checkFinish = finished(0)
 
-  while(linePlayer[0] < totalLine && linePlayer[1] < totalLine && linePlayer[2] < totalLine ){
-    for(let i = 0; i < player.length; i++){
-        // posPlayer[i] = diceRoll()
-        let posPlayer = diceRoll()
-        linePlayer[i] += posPlayer
-        // console.log("pos",posPlayer)
-        if(linePlayer[i] >= totalLine){
-            winPlayer = player[i]
-            idxWinner = i
-            linePlayer[i] = totalLine
-            printBoard()
-            break
+    while(checkFinish){
+        for(let i = 0; i < player.length; i++){
+            let posPlayer = diceRoll()
+            linePlayer[i] += posPlayer
+            checkFinish = finished(linePlayer[i])
+            
+            if(linePlayer[i] === randomObstacle1 || linePlayer[i]=== randomObstacle2){
+                linePlayer[i] = 0
+                printBoard()
+                sleep(500)
+            }
+            else{
+                if(checkFinish === false){
+                    winPlayer = player[i]
+                    idxWinner = i
+                    linePlayer[i] = totalLine-1
+                //   printBoard()
+                    break
+                } else{
+                    printBoard()
+                }
+                sleep(500)
+            }
         }
-        else{
-            printBoard()
-        }
-        sleep(1000)
     }
-  }
-  finished()
-
+    printBoard()
+    console.log(winner())
 }
 
-function finished() {
-  clearScreen()
-  linePlayer[idxWinner] = totalLine-1
-  printBoard()
-  console.log(winner())
+function finished(indeks){
+    if(indeks >= totalLine-1){
+        return false
+    }
+    else{
+        return true
+    }
 }
 
 function winner() {
