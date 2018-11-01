@@ -62,15 +62,22 @@ function advance(player) {
   let limit = 'start'
   while (limit === 'start') {
     for (let i = 0; i < player; i++) {
-      totalPlayer[i].position += diceRoll()
-      if (totalPlayer[i].position === Math.floor(track / 4)) totalPlayer[i].position += 5
-      else if (totalPlayer[i].position === track - 5) totalPlayer[i].position -= 5
-      else if (totalPlayer[i].position >= track - 1) {
-        totalPlayer[i].position = track - 1
+      if (player > 1 && track > 14) {
+        totalPlayer[i].position += diceRoll()
+        if (totalPlayer[i].position === Math.floor(track / 4)) totalPlayer[i].position += 5
+        else if (totalPlayer[i].position === track - 5) totalPlayer[i].position -= 5
+        else if (totalPlayer[i].position >= track - 1) {
+          totalPlayer[i].position = track - 1
+          limit = 'stop'
+          clearScreen()
+          printBoard()
+          winner(i)
+          break
+        }
+      }
+      else {
         limit = 'stop'
-        clearScreen()
-        printBoard()
-        winner(i)
+        console.log('You need minimum 2 players and 15 tracks')
         break
       }
       sleep(300)
