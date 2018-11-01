@@ -1,0 +1,23 @@
+{
+  "name": "jsracer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js-racer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/young-fox-2018/jsracer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/young-fox-2018/jsracer/issues"
+  },
+  "homepage": "https://github.com/young-fox-2018/jsracer#readme",
+  "dependencies": {
+    "figlet": "^1.2.1",
+    "terminal-kit": "^1.26.4"
+  }
+}
