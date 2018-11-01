@@ -58,12 +58,13 @@ function printLine (player, pos) {
 
 function advance(player) {
     let dice = diceRoll()
+    console.log(`Player: ${player.name} Dice: ${dice}`)
     if((player.pos + dice) < numTracks ) {
       player.pos += dice
     } else {
       player.pos = numTracks - 1
     }
-    console.log(`Player: ${player.name} Dice: ${dice}`)
+    
 }
 
 function finished(player) {
@@ -103,22 +104,8 @@ while(!finished(players[i])) {
   i++;
   if(i === players.length) i = 0;
   sleep(1000);
-  // clearScreen()
+  clearScreen()
 }
-// do {
-//   i++;
-//   reset_board();
-//   printBoard(players);
-//   if (i === players.length) i = 0;
-//   advance(players[i]);
-  
-//   if (finished(players[i])) {
-//     reset_board()
-//     printBoard(players)
-//     return winner(players[i]);
-//   }
-//   sleep(1000);
-// } while(!finished(players[i]))
 
 
 
