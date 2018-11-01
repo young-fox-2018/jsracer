@@ -1,7 +1,7 @@
 "use strict"
 
 function diceRoll() {
-  let diceRandom = Math.floor((Math.random() * (6 - 1)) + 1);
+  let diceRandom = Math.floor((Math.random() * (3 - 1)) + 1);
   return diceRandom
 }
 
@@ -35,12 +35,26 @@ function clearScreen() {
 function printBoard(playerName, playerPosition, lengthBoard) {
   let board = []
   for (let i = 0; i < lengthBoard; i++) {
+
+    if (i === 7 || i === 9) {
+      board.push('<')
+    }
+    else if (i === 3) {
+      board.push('>')
+    }
+    else if (i === lengthBoard - 2) {
+      board.push('@')
+    }
     if (i === playerPosition) {
       board.push(playerName)
     }
-    else {
-      board.push(' ')
+    else if (i === lengthBoard-1) {
+      board.push(':')
     }
+    else {
+      board.push('~')
+    }
+
   }
   console.log(board.join('|'))
 }
@@ -86,6 +100,15 @@ if (validation) {
       }
       printBoard(objPlayer[i].name, objPlayer[i].position, lengthBoard)
       objPlayer[i].position += diceRoll()
+      if (objPlayer[i].position === 7 || objPlayer[i].position === 9) {
+        objPlayer[i].position -= 3
+      }
+      else if (objPlayer[i].position === lengthBoard - 2) {
+        objPlayer[i].position = 0 
+      }
+      else if (objPlayer[i].position === 3) {
+        objPlayer[i].position += 5
+      }
     }
     sleep(1000)
     console.clear()
