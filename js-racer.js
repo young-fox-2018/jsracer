@@ -14,21 +14,33 @@ function sleep(milliseconds) {
   }
 }
 
+function argv(players, lengthBoard) {
+  if (players < 2 || players > 5) {
+    console.log("Jumlah pemain minimal 2 dan maksimal 5")
+    return false
+  }
+  if (lengthBoard < 10 || lengthBoard > 20) {
+    console.log("Panjang lintasan minimal 10 dan maksimal 20")
+    return false
+  }
+  return true
+}
+
 function clearScreen() {
   // Un-comment this line if you have trouble with console.clear();
   //return process.stdout.write('\033c');
   console.clear();
 }
 
-function printBoard(playerName,playerPosition,lengthBoard) {
+function printBoard(playerName, playerPosition, lengthBoard) {
   let board = []
   for (let i = 0; i < lengthBoard; i++) {
-      if (i === playerPosition) {
-        board.push(playerName)
-      }
-      else {
-        board.push(' ')
-      }
+    if (i === playerPosition) {
+      board.push(playerName)
+    }
+    else {
+      board.push(' ')
+    }
   }
   console.log(board.join('|'))
 }
@@ -55,24 +67,31 @@ function winner(arr) {
 }
 
 
-let player = process.argv[2]
+
+let players = process.argv[2]
 let lengthBoard = process.argv[3]
 let unfinished = false
 let winners = []
-let objPlayer = dataPlayer(player)
+let objPlayer = dataPlayer(players)
 
-loop: while (unfinished === false) {
-  for (let i = 0; i < objPlayer.length; i++) {
-    if (objPlayer[i].position >= Number(lengthBoard)-1) {
-      objPlayer[i].position = 19
-      winners.push(objPlayer[i].name)
-      unfinished = true
+let validation = argv(players, lengthBoard)
+
+if (validation) {
+  loop: while (unfinished === false) {
+    for (let i = 0; i < objPlayer.length; i++) {
+      if (objPlayer[i].position >= Number(lengthBoard) - 1) {
+        objPlayer[i].position = 19
+        winners.push(objPlayer[i].name)
+        unfinished = true
+      }
+      printBoard(objPlayer[i].name, objPlayer[i].position, lengthBoard)
+      objPlayer[i].position += diceRoll()
     }
-    printBoard(objPlayer[i].name,objPlayer[i].position, lengthBoard)
-    objPlayer[i].position += diceRoll()
+    sleep(1000)
+    console.clear()
   }
-  sleep(1000)
+  winner(winners)
 }
 
-winner(winners)
+
 
