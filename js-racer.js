@@ -1,5 +1,6 @@
-let sumtrack = 30
-let playertotal = 5
+const argv = process.argv
+let playertotal = argv[2]
+let sumtrack = JSON.parse(argv[3])
 let player = "abcdefghijklmnopqrstuvwxyz"
 let bomb = Math.floor(Math.random()*(sumtrack+1))
 let autowin = Math.floor(Math.random()*(sumtrack+1))
@@ -57,7 +58,15 @@ function printLine (player, pos) {
   var track = ""
   if (pos >= sumtrack) {
     for (let i = 0; i < sumtrack; i++) {
-      track = track + row
+      if (i === bomb-1) {
+        track = track + "|" + "%"
+      }
+      else if (i === autowin-1) {
+        track = track + "|" + "8"
+      }
+      else {
+        track = track + row
+      }
     }
     track = track + "|" + player + "\n"
   }
