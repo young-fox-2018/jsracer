@@ -14,42 +14,39 @@ function sleep (milliseconds) {
 }
 
 function printBoard () {  
-
-  var board = '';
+  var board = [];
   for (let i = 0; i < args[0]; i++) {
-    board += printLine(player[i], args[1]);
+    board.push(printLine(player[i], args[1]));
   }
 
-  return board;
+  return board.join('\n');
 }
 
 function printLine (player, pos) {
-  var baris = '';
+  var baris = [];
 
-  for (let i = 1; i <= pos; i++) {
+  for (let i = 0; i < pos; i++) {
     if (i === player.position) {
-      baris += `|${player.name}`;
+      baris.push(`|${player.name}`);
     } else {
-      baris += '| ';
+      baris.push('| ');
     }
   }
-  baris += '\n';
 
-  return baris;
+  return baris.join('');
 }
 
 function advance (player) {
   player.position += diceRoll();
   if(player.position >= args[1]) {
-    player.position = Number(args[1]);
+    player.position = args[1]-1;
   }
   return player;
 }
 
 function finished () {
-
   for (let i = 0; i < player.length; i++) {
-    if (player[i].position == args[1]) {
+    if (player[i].position === args[1]-1) {
       return true;
     }
   }
@@ -60,7 +57,7 @@ function winner () {
   var winnerPlayer = '';
 
   for (let i = 0; i < player.length; i++){
-    if (player[i].position == args[1]) {
+    if (player[i].position === args[1] - 1) {
       winnerPlayer = player[i].name;
     }
   }
@@ -73,42 +70,51 @@ function clearScreen () {
   console.clear();
 }
 
-// function tambahan
+
+
+// NOTE: ADDITIONAL FUNCTION
 function getPlayer(){
   var player = [];
-  var possiblePlayers = 'abcdefghijklmnopqrstuvwxyz';
+  var possiblePlayers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     
   for (let i = 0; i < args[0]; i++){
     let obj = {
       'name': possiblePlayers[i],
-      'position': 1
+      'position': 0
     };    
     player.push(obj);    
   }  
   return player;
 }
 
-var args = process.argv.slice(2);
-var player = getPlayer();
+// START THE GAME
+const args = process.argv.slice(2);
+args[0] = JSON.parse(args[0]);
+args[1] = JSON.parse(args[1]);
 
-console.log(printBoard());
-
-var play = finished();
-while(!play){
+if(args[0] < 2 || args[1] < 15) {
+  console.log(`Pemain minimal 2 dan panjang lintasan minimal 15`);
+} else {
+  var player = getPlayer();
   
-  for (let i = 0; i < player.length; i++) {
-    advance(player[i]);
-    sleep(800);
-    if (finished()){
-      play = true;        
-    }
-    clearScreen();    
-    console.log(printBoard());
-    if (play) {
-      break;
+  console.log(printBoard());
+  
+  var play = finished();
+  while(!play){
+    
+    for (let i = 0; i < player.length; i++) {
+      advance(player[i]);
+      sleep(200);
+      if (finished()){
+        play = true;        
+      }
+      clearScreen();    
+      console.log(printBoard());
+      if (play) {
+        break;
+      }
     }
   }
+  
+  console.log(winner());
 }
-
-console.log(winner());
-// console.log(player);
