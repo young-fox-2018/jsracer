@@ -2,7 +2,7 @@
 
 let numPlayer = JSON.parse(process.argv[2])
 let track = JSON.parse(process.argv[3])
-
+let trap =Math.round(Math.random()*track-1)
 
 // INITIALIZING PLAYER
 let objPlayer = {}
@@ -10,7 +10,7 @@ const abc = "abcdefghijklmnopqrstuvwxyz"
 for(let name = 0 ; name < numPlayer ; name++){
   objPlayer[abc[name]] = 0
 }
-
+// ROLLING A DICE FROM 1-6
 function diceRoll () {
   return Math.round(Math.random()*6)
 }
@@ -24,6 +24,7 @@ function sleep (milliseconds) {
   }
 }
 
+// UPDATING THE BOARD
 function printBoard () {
   let res = ""
   for(var key in objPlayer){
@@ -31,13 +32,17 @@ function printBoard () {
     console.log(res)
   }
 } 
-  
+
+//UPDATING EACH LINE
 function printLine (player, pos) {
   let arr = []
   
   for(let col = 0 ; col <= track ; col++){
     if(col === pos){
       arr.push("|" + player)
+    }
+    else if(col === trap){
+      arr.push("|*")
     }
     else{
       arr.push("| ")
@@ -46,15 +51,19 @@ function printLine (player, pos) {
   arr = arr.join("")
   return arr  
 }
-
+//MOVING THE PLAYER, IF STPOS ON  TRAP, RETURN TO START
 function advance (player) {
   objPlayer[player] += diceRoll()
   if(objPlayer[player] > track){
     objPlayer[player] = track
   }
+  else if(objPlayer[player] === trap){
+    objPlayer[player] = 0
+  }
   return objPlayer[player]
 }
 
+// IF SOMEONE REACHED MORE/ON FINISH LINE, DONE
 function finished () {
   for(var key in objPlayer){
     if ( objPlayer[key] >= track) {
@@ -64,6 +73,7 @@ function finished () {
   return false
 }
 
+// TELL WHO'S THE WINNER
 function winner () {
   for(var key in objPlayer){
     if(objPlayer[key] >= track){
