@@ -1,7 +1,7 @@
 "use strict"
 
 function diceRoll () {
-  return Math.floor(Math.random() * 4) + 1;
+  return Math.floor(Math.random() * 6) + 1;
 }
 
 function sleep (milliseconds) {
@@ -41,6 +41,7 @@ function advance (player) {
   if(player.position >= args[1]) {
     player.position = args[1]-1;
   }
+
   return player;
 }
 
@@ -50,6 +51,7 @@ function finished () {
       return true;
     }
   }
+
   return false;
 }
 
@@ -61,6 +63,7 @@ function winner () {
       winnerPlayer = player[i].name;
     }
   }
+
   return `Player ${winnerPlayer} is the winner`;
 }
 
@@ -83,7 +86,8 @@ function getPlayer(){
       'position': 0
     };    
     player.push(obj);    
-  }  
+  } 
+
   return player;
 }
 
