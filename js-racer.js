@@ -1,5 +1,5 @@
 const argv = process.argv
-let playertotal = argv[2]
+let playertotal = JSON.parse(argv[2]
 let sumtrack = JSON.parse(argv[3])
 let player = "abcdefghijklmnopqrstuvwxyz"
 let bomb = Math.floor(Math.random()*(sumtrack+1))
